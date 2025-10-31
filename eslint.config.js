@@ -31,5 +31,10 @@ export default defineConfig([
     plugins: {
       prettier,
     },
+    rules: {
+      'perfectionist/sort-interfaces': 'off',
+      'perfectionist/sort-modules': 'off',
+      'perfectionist/sort-objects': 'off',
+    },
   },
 ]);
