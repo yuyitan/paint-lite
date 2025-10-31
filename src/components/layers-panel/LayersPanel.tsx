@@ -10,9 +10,12 @@ function LayersPanel() {
     <>
       <h2>Layers</h2>
       <div className="flex flex-col gap-1">
-        {layers.map((layer) => (
-          <LayerCard key={layer.id} name={layer.name} />
-        ))}
+        {layers
+          .slice()
+          .reverse()
+          .map((layer) => (
+            <LayerCard key={layer.id} name={layer.name} />
+          ))}
       </div>
     </>
   );

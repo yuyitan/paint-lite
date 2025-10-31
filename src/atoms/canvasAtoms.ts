@@ -1,5 +1,7 @@
 import { atom } from 'jotai';
 
-import type { CanvasLayer } from '../types';
+import type { BackgroundLayer } from '../types';
 
-export const layersAtom = atom<CanvasLayer[]>([]);
+export const layersAtom = atom<BackgroundLayer[]>([]);
+
+export const backgroundColorAtom = atom('#ffffff');

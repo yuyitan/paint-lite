@@ -3,8 +3,10 @@ import { useEffect, useRef, useState } from 'react';
 interface ToolMenuProps {
   children: React.ReactNode;
   target: React.ReactNode;
+  onClose?(): void;
 }
-function ToolMenu({ children, target }: ToolMenuProps) {
+
+function ToolMenu({ children, target, onClose }: ToolMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -12,11 +14,12 @@ function ToolMenu({ children, target }: ToolMenuProps) {
     const handleClickOutside = (event: MouseEvent) => {
       if (ref.current && !ref.current.contains(event.target as Node)) {
         setIsOpen(false);
+        if (onClose) onClose();
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  }, [onClose]);
 
   return (
     <div className="relative inline-block" ref={ref}>
