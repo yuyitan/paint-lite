@@ -4,9 +4,10 @@ interface ToolMenuProps {
   children: React.ReactNode;
   target: React.ReactNode;
   onClose?(): void;
+  width: number;
 }
 
-function ToolMenu({ children, target, onClose }: ToolMenuProps) {
+function ToolMenu({ children, target, onClose, width }: ToolMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -27,7 +28,10 @@ function ToolMenu({ children, target, onClose }: ToolMenuProps) {
         {target}
       </button>
       {isOpen && (
-        <div className="absolute p-2 top-full mt-2 w-[400px] bg-white border border-gray-300 rounded-md shadow z-10">
+        <div
+          className="absolute p-2 top-full mt-2 bg-white border border-gray-300 rounded-md shadow z-10"
+          style={{ width }}
+        >
           {children}
         </div>
       )}
