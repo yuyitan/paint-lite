@@ -10,6 +10,7 @@ import {
   backgroundColorAtom,
   layersAtom,
   selectedShapeAtom,
+  shapeColorAtom,
   shapeCounterAtom,
 } from '../atoms/canvasAtoms';
 import { addLayer, createShapeLayer } from './layers-panel/utils';
@@ -19,6 +20,7 @@ function CanvasStage() {
   const [layers, setLayers] = useAtom(layersAtom);
   const [shapeCounter, setShapeCounter] = useAtom(shapeCounterAtom);
   const [selectedShape, setSelectedShape] = useAtom(selectedShapeAtom);
+  const [shapeColor] = useAtom(shapeColorAtom);
   const [newShape, setNewShape] = useState<null | Shape>(null);
 
   const stageRef = useRef<Konva.Stage | null>(null);
@@ -39,6 +41,7 @@ function CanvasStage() {
           width: 50,
           height: 50,
           shapeType: selectedShape,
+          fill: shapeColor,
         });
       }
     }
@@ -57,9 +60,9 @@ function CanvasStage() {
   const renderShape = (shape: Shape) => {
     switch (shape.shapeType) {
       case 'circle':
-        return <Circle {...shape} fill="#000000" />;
+        return <Circle {...shape} />;
       case 'rectangle':
-        return <Rect {...shape} fill="#000000" />;
+        return <Rect {...shape} />;
     }
   };
 

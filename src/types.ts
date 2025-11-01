@@ -11,9 +11,10 @@ export type BackgroundLayer = {
 export type ShapeType = 'circle' | 'rectangle';
 
 export type Shape = {
-  height: number;
+  fill: string; // hex code
   id: string;
   shapeType: ShapeType;
+  height: number;
   width: number;
   x: number;
   y: number;
