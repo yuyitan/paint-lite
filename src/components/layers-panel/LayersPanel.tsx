@@ -38,9 +38,13 @@ function LayersPanel() {
           setBackgroundColor(topBg.color);
         } else {
           setBackgroundColor(DEFAULT_BG_COLOR);
+          setBackgroundCounter(0);
         }
       }
-
+      if (!updatedLayers.length) {
+        setBackgroundCounter(0);
+        setShapeCounter(0);
+      }
       return updatedLayers;
     });
   };
