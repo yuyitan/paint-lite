@@ -18,3 +18,7 @@ h3 {
 label {
   font-weight: 500;
 }
+
+button {
+  cursor: pointer;
+}

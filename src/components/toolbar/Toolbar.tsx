@@ -3,8 +3,8 @@ import ShapeButton from './ShapeButton';
 
 function Toolbar() {
   return (
-    <div className="bg-slate-900 shadow-lg py-3 px-4 flex items-center justify-between">
-      <div className="flex gap-3">
+    <div className="bg-slate-900 shadow-lg py-3 px-4 flex items-center justify-between fixed top-0 z-20 w-full">
+      <div className="flex gap-4">
         <FillButton />
         <ShapeButton />
       </div>
