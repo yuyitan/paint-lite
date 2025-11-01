@@ -8,9 +8,9 @@ function Toolbar() {
         <FillButton />
         <ShapeButton />
       </div>
-      <div className="text-white">
+      <h1 className="text-white">
         paint-lite by <span className="font-semibold">Raine Tan</span>
-      </div>
+      </h1>
     </div>
   );
 }

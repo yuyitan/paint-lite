@@ -16,8 +16,8 @@ function FillButton() {
       tool="background-fill"
     >
       <div className="flex flex-col">
-        <label htmlFor="backgroundColorInput" className="text-lg">
-          Background Fill Tool
+        <label htmlFor="backgroundColorInput">
+          <h3>Background Fill Tool</h3>
         </label>
         <div className="text-gray-600 text-sm mb-4">Choose a color</div>
         <input

@@ -28,7 +28,7 @@ function ShapeButton() {
       width={400}
       tool="shape"
     >
-      <label className="text-lg">Shape Tool</label>
+      <h3>Shape Tool</h3>
       <div className="text-gray-600 text-sm mb-4">
         Select color and shape. Drag and draw on the canvas!
       </div>
