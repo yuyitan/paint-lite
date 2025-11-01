@@ -1,7 +1,7 @@
 import type Konva from 'konva';
 
 import { useAtom } from 'jotai';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Circle, Layer, Rect, Stage } from 'react-konva';
 
 import type { Shape } from '../types';
@@ -31,7 +31,21 @@ function CanvasStage() {
   const [shapeColor] = useAtom(shapeColorAtom);
   const [newShape, setNewShape] = useState<null | Shape>(null);
 
+  const [windowSize, setWindowSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+
   const stageRef = useRef<Konva.Stage | null>(null);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+    };
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleMouseDown = (e: Konva.KonvaEventObject<MouseEvent>) => {
     const stage = stageRef.current;
@@ -138,8 +152,8 @@ function CanvasStage() {
 
   return (
     <Stage
-      height={window.innerHeight}
-      width={window.innerWidth}
+      height={windowSize.height}
+      width={windowSize.width}
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
