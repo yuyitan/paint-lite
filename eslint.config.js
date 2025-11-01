@@ -35,6 +35,8 @@ export default defineConfig([
       'perfectionist/sort-interfaces': 'off',
       'perfectionist/sort-modules': 'off',
       'perfectionist/sort-objects': 'off',
+      'perfectionist/sort-object-types': 'off',
+      'perfectionist/sort-jsx-props': 'off',
     },
   },
 ]);
