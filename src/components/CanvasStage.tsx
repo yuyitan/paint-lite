@@ -46,8 +46,8 @@ function CanvasStage() {
           id: crypto.randomUUID(),
           x,
           y,
-          width: 50,
-          height: 50,
+          width: 0,
+          height: 0,
           shapeType: selectedShape,
           fill: shapeColor,
         });
@@ -55,9 +55,42 @@ function CanvasStage() {
     }
   };
 
+  const handleMouseMove = () => {
+    if (!newShape || selectedTool !== 'shape') return;
+
+    const stage = stageRef.current;
+    if (!stage) return;
+
+    const pointerPosition = stage.getPointerPosition();
+    if (!pointerPosition) return;
+
+    const width = pointerPosition.x - newShape.x;
+    const height = pointerPosition.y - newShape.y;
+
+    setNewShape({
+      ...newShape,
+      width,
+      height,
+    });
+  };
+
+  const normalizeShape = (shape: Shape): Shape => {
+    const normalized = { ...shape };
+    if (shape.width < 0) {
+      normalized.x = shape.x + shape.width;
+      normalized.width = Math.abs(shape.width);
+    }
+    if (shape.height < 0) {
+      normalized.y = shape.y + shape.height;
+      normalized.height = Math.abs(shape.height);
+    }
+    return normalized;
+  };
+
   const handleMouseUp = () => {
     if (selectedTool === 'shape' && newShape) {
-      const newLayer = createShapeLayer(`Shape ${shapeCounter + 1}`, newShape);
+      const normalizedShape = normalizeShape(newShape);
+      const newLayer = createShapeLayer(`Shape ${shapeCounter + 1}`, normalizedShape);
       setLayers(addLayer(layers, newLayer));
       setShapeCounter(shapeCounter + 1);
       setNewShape(null);
@@ -74,12 +107,32 @@ function CanvasStage() {
     setSelectedTool(null);
   };
 
-  const renderShape = (shape: Shape) => {
+  const renderShape = (shape: Shape, isPreview = false) => {
+    const normalizedShape = normalizeShape(shape);
+    const commonProps = {
+      ...normalizedShape,
+      opacity: isPreview ? 0.75 : (normalizedShape.opacity ?? 1),
+      stroke: isPreview ? normalizedShape.fill : normalizedShape.stroke,
+      dash: isPreview && !normalizedShape.dash ? [4, 2] : normalizedShape.dash,
+      draggable: !isPreview, // only finalized shapes draggable
+    };
     switch (shape.shapeType) {
       case 'circle':
-        return <Circle {...shape} />;
+        return (
+          <Circle
+            key={shape.id}
+            x={shape.x + shape.width / 2}
+            y={shape.y + shape.height / 2}
+            radius={Math.max(Math.abs(shape.width), Math.abs(shape.height)) / 2}
+            fill={commonProps.fill}
+            opacity={commonProps.opacity}
+            dash={commonProps.dash}
+            stroke={commonProps.stroke}
+            draggable={commonProps.draggable}
+          />
+        );
       case 'rectangle':
-        return <Rect {...shape} />;
+        return <Rect key={shape.id} {...commonProps} />;
     }
   };
 
@@ -88,12 +141,14 @@ function CanvasStage() {
       height={window.innerHeight}
       width={window.innerWidth * 0.75}
       onMouseDown={handleMouseDown}
+      onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       ref={stageRef}
       style={{ backgroundColor }}
     >
       <Layer>
         {layers.filter((layer) => layer.tool === 'shape').map((layer) => renderShape(layer))}
+        {newShape && renderShape(newShape, true)}
       </Layer>
     </Stage>
   );

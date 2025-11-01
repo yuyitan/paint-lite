@@ -18,6 +18,9 @@ export type Shape = {
   width: number;
   x: number;
   y: number;
+  stroke?: string;
+  dash?: number[];
+  opacity?: number;
 };
 
 export type ShapeLayer = {
