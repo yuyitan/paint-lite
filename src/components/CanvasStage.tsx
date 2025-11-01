@@ -8,16 +8,24 @@ import type { Shape } from '../types';
 
 import {
   backgroundColorAtom,
+  backgroundCounterAtom,
   layersAtom,
+  selectedBackgroundColorAtom,
   selectedShapeAtom,
+  selectedToolAtom,
   shapeColorAtom,
   shapeCounterAtom,
 } from '../atoms/canvasAtoms';
-import { addLayer, createShapeLayer } from './layers-panel/utils';
+import { addLayer, createBackgroundLayer, createShapeLayer } from './layers-panel/utils';
 
 function CanvasStage() {
-  const [backgroundColor] = useAtom(backgroundColorAtom);
   const [layers, setLayers] = useAtom(layersAtom);
+  const [selectedTool, setSelectedTool] = useAtom(selectedToolAtom);
+
+  const [selectedBackgroundColor] = useAtom(selectedBackgroundColorAtom);
+  const [backgroundColor, setBackgroundColor] = useAtom(backgroundColorAtom);
+  const [backgroundCounter, setBackgroundCounter] = useAtom(backgroundCounterAtom);
+
   const [shapeCounter, setShapeCounter] = useAtom(shapeCounterAtom);
   const [selectedShape, setSelectedShape] = useAtom(selectedShapeAtom);
   const [shapeColor] = useAtom(shapeColorAtom);
@@ -28,9 +36,9 @@ function CanvasStage() {
   const handleMouseDown = (e: Konva.KonvaEventObject<MouseEvent>) => {
     const stage = stageRef.current;
     const clickedOnEmpty = e.target === stage;
-    if (!clickedOnEmpty || !selectedShape) return;
+    if (!stage || !clickedOnEmpty || !selectedShape) return;
 
-    if (stage) {
+    if (selectedTool === 'shape') {
       const pointerPosition = stage.getPointerPosition();
       if (pointerPosition) {
         const { x, y } = pointerPosition;
@@ -48,13 +56,22 @@ function CanvasStage() {
   };
 
   const handleMouseUp = () => {
-    if (newShape) {
+    if (selectedTool === 'shape' && newShape) {
       const newLayer = createShapeLayer(`Shape ${shapeCounter + 1}`, newShape);
       setLayers(addLayer(layers, newLayer));
       setShapeCounter(shapeCounter + 1);
+      setNewShape(null);
+      setSelectedShape(null);
+    } else if (selectedTool === 'background-fill') {
+      setBackgroundColor(selectedBackgroundColor);
+      const layer = createBackgroundLayer(
+        `Background ${backgroundCounter + 1}`,
+        selectedBackgroundColor,
+      );
+      setLayers(addLayer(layers, layer));
+      setBackgroundCounter(backgroundCounter + 1);
     }
-    setNewShape(null);
-    setSelectedShape(null);
+    setSelectedTool(null);
   };
 
   const renderShape = (shape: Shape) => {
@@ -69,18 +86,14 @@ function CanvasStage() {
   return (
     <Stage
       height={window.innerHeight}
+      width={window.innerWidth * 0.75}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
       ref={stageRef}
       style={{ backgroundColor }}
-      width={window.innerWidth}
     >
       <Layer>
-        {layers.map((layer) => {
-          if (layer.tool === 'shape') {
-            return renderShape(layer);
-          }
-        })}
+        {layers.filter((layer) => layer.tool === 'shape').map((layer) => renderShape(layer))}
       </Layer>
     </Stage>
   );

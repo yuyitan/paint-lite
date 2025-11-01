@@ -1,13 +1,19 @@
+import { useAtom } from 'jotai';
 import { useEffect, useRef, useState } from 'react';
+
+import type { ToolType } from '../types';
+
+import { selectedToolAtom } from '../atoms/canvasAtoms';
 
 interface ToolMenuProps {
   children: React.ReactNode;
   target: React.ReactNode;
-  onClose?(): void;
   width: number;
+  tool: ToolType;
 }
 
-function ToolMenu({ children, target, onClose, width }: ToolMenuProps) {
+function ToolMenu({ children, target, width, tool }: ToolMenuProps) {
+  const [, setSelectedTool] = useAtom(selectedToolAtom);
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -15,16 +21,21 @@ function ToolMenu({ children, target, onClose, width }: ToolMenuProps) {
     const handleClickOutside = (event: MouseEvent) => {
       if (ref.current && !ref.current.contains(event.target as Node)) {
         setIsOpen(false);
-        if (onClose) onClose();
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [onClose]);
+  }, [setSelectedTool]);
 
   return (
     <div className="relative inline-block" ref={ref}>
-      <button onClick={() => setIsOpen(!isOpen)} type="button">
+      <button
+        onClick={() => {
+          if (!isOpen) setSelectedTool(tool);
+          setIsOpen(!isOpen);
+        }}
+        type="button"
+      >
         {target}
       </button>
       {isOpen && (

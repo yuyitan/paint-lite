@@ -5,7 +5,7 @@ export type BaseLayer = {
 
 export type BackgroundLayer = {
   color: string; // hex code
-  tool: 'background';
+  tool: 'background-fill';
 } & BaseLayer;
 
 export type ShapeType = 'circle' | 'rectangle';
@@ -26,3 +26,5 @@ export type ShapeLayer = {
   Shape;
 
 export type CanvasLayer = BackgroundLayer | ShapeLayer;
+
+export type ToolType = 'background-fill' | 'shape';

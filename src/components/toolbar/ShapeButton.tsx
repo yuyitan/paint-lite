@@ -12,7 +12,7 @@ function ShapeButton() {
   const [shapeColor, setShapeColor] = useAtom(shapeColorAtom);
 
   return (
-    <ToolMenu target={<div>shape</div>} width={300}>
+    <ToolMenu target={<div>shape</div>} width={300} tool="shape">
       <label>Shape Tool</label>
       <div className="flex gap-4">
         <div className="flex gap-4">

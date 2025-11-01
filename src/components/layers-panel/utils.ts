@@ -4,7 +4,7 @@ export const createBackgroundLayer = (name: string, color: string): BackgroundLa
   return {
     id: crypto.randomUUID(),
     name,
-    tool: 'background',
+    tool: 'background-fill',
     color,
   };
 };
