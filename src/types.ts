@@ -8,7 +8,7 @@ export type BackgroundLayer = {
   tool: 'background-fill';
 } & BaseLayer;
 
-export type ShapeType = 'circle' | 'rectangle';
+export type ShapeType = 'arrow' | 'circle' | 'rectangle';
 
 export type Shape = {
   fill: string; // hex code
@@ -18,6 +18,7 @@ export type Shape = {
   width: number;
   x: number;
   y: number;
+  points?: number[];
   stroke?: string;
   dash?: number[];
   opacity?: number;

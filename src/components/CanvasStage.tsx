@@ -2,7 +2,7 @@ import type Konva from 'konva';
 
 import { useAtom } from 'jotai';
 import { useEffect, useRef, useState } from 'react';
-import { Circle, Layer, Rect, Stage } from 'react-konva';
+import { Arrow, Circle, Layer, Rect, Stage } from 'react-konva';
 
 import type { Shape } from '../types';
 
@@ -78,25 +78,36 @@ function CanvasStage() {
     const pointerPosition = stage.getPointerPosition();
     if (!pointerPosition) return;
 
-    const width = pointerPosition.x - newShape.x;
-    const height = pointerPosition.y - newShape.y;
-
-    setNewShape({
-      ...newShape,
-      width,
-      height,
-    });
+    switch (newShape.shapeType) {
+      case 'arrow':
+        setNewShape({
+          ...newShape,
+          points: [newShape.x, newShape.y, pointerPosition.x, pointerPosition.y],
+          stroke: newShape.fill,
+        });
+        break;
+      case 'circle':
+      case 'rectangle':
+        setNewShape({
+          ...newShape,
+          width: pointerPosition.x - newShape.x,
+          height: pointerPosition.y - newShape.y,
+        });
+        break;
+    }
   };
 
   const normalizeShape = (shape: Shape): Shape => {
     const normalized = { ...shape };
-    if (shape.width < 0) {
-      normalized.x = shape.x + shape.width;
-      normalized.width = Math.abs(shape.width);
-    }
-    if (shape.height < 0) {
-      normalized.y = shape.y + shape.height;
-      normalized.height = Math.abs(shape.height);
+    if (shape.shapeType === 'rectangle' || shape.shapeType === 'circle') {
+      if (shape.width! < 0) {
+        normalized.x = shape.x + shape.width!;
+        normalized.width = Math.abs(shape.width!);
+      }
+      if (shape.height! < 0) {
+        normalized.y = shape.y + shape.height!;
+        normalized.height = Math.abs(shape.height!);
+      }
     }
     return normalized;
   };
@@ -131,6 +142,19 @@ function CanvasStage() {
       draggable: !isPreview, // only finalized shapes draggable
     };
     switch (shape.shapeType) {
+      case 'arrow':
+        return (
+          <Arrow
+            key={shape.id}
+            points={shape.points!}
+            stroke={shape.stroke} // line color
+            fill={shape.stroke} // arrowhead color
+            strokeWidth={2}
+            dash={commonProps.dash}
+            opacity={commonProps.opacity}
+            draggable={commonProps.draggable}
+          />
+        );
       case 'circle':
         return (
           <Circle

@@ -2,6 +2,7 @@ import { useAtom } from 'jotai';
 
 import type { ShapeType } from '../../types';
 
+import arrowIcon from '../../assets/arrow.svg';
 import circleIcon from '../../assets/circle.svg';
 import shapesIcon from '../../assets/shapes.svg';
 import squareIcon from '../../assets/square.svg';
@@ -14,6 +15,7 @@ const SHAPES: { name: ShapeType; icon: string }[] = [
     icon: squareIcon,
   },
   { name: 'circle', icon: circleIcon },
+  { name: 'arrow', icon: arrowIcon },
 ];
 
 function ShapeButton() {
