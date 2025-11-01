@@ -1,4 +1,4 @@
-# Canvas App
+# Paint-lite
 
 A simple interactive canvas app built with **React**, **TypeScript**, and **Vite**.
 
