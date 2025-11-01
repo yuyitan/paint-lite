@@ -139,7 +139,7 @@ function CanvasStage() {
   return (
     <Stage
       height={window.innerHeight}
-      width={window.innerWidth * 0.75}
+      width={window.innerWidth}
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}

@@ -9,7 +9,7 @@ function FillButton() {
   );
 
   return (
-    <ToolMenu target={<div>fill</div>} width={200} tool="background-fill">
+    <ToolMenu target={<div className="text-white">fill</div>} width={200} tool="background-fill">
       <div className="flex flex-col gap-1">
         <label htmlFor="backgroundColorInput">Background Fill Tool</label>
         <input

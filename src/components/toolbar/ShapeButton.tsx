@@ -12,10 +12,13 @@ function ShapeButton() {
   const [shapeColor, setShapeColor] = useAtom(shapeColorAtom);
 
   return (
-    <ToolMenu target={<div>shape</div>} width={300} tool="shape">
+    <ToolMenu target={<div className="text-white">shape</div>} width={400} tool="shape">
       <label>Shape Tool</label>
-      <div className="flex gap-4">
-        <div className="flex gap-4">
+      <div className="text-gray-600 text-sm mb-4">
+        Select color and shape. Drag and draw on the canvas!
+      </div>
+      <div className="flex gap-6">
+        <div className="flex gap-6">
           <div className="flex flex-col">
             <label htmlFor="shapeColorInput">Color</label>
             <input

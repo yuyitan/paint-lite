@@ -40,7 +40,7 @@ function ToolMenu({ children, target, width, tool }: ToolMenuProps) {
       </button>
       {isOpen && (
         <div
-          className="absolute p-2 top-full mt-2 bg-white border border-gray-300 rounded-md shadow z-10"
+          className="absolute py-3 px-4 top-full mt-2 bg-white border border-gray-200 rounded shadow-md z-10"
           style={{ width }}
         >
           {children}
