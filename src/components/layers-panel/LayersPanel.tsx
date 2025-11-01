@@ -23,6 +23,28 @@ function LayersPanel() {
     setShapeCounter(0);
   };
 
+  const handleDelete = (id: string) => {
+    setLayers((prev) => {
+      const target = prev.find((layer) => layer.id === id);
+      if (!target) return prev;
+      const updatedLayers = prev.filter((layer) => layer.id !== id);
+
+      // delete background layer
+      if (target.tool === 'background-fill') {
+        const remainingBgLayers = updatedLayers.filter((layer) => layer.tool === 'background-fill');
+        if (remainingBgLayers.length > 0) {
+          // set background to top most background layer
+          const topBg = remainingBgLayers[remainingBgLayers.length - 1];
+          setBackgroundColor(topBg.color);
+        } else {
+          setBackgroundColor(DEFAULT_BG_COLOR);
+        }
+      }
+
+      return updatedLayers;
+    });
+  };
+
   return (
     <div className="fixed top-16 right-4 bg-white p-4 w-[300px] shadow-md rounded border border-gray-200">
       <div className="flex justify-between items-center mb-2">
@@ -43,7 +65,7 @@ function LayersPanel() {
             .slice()
             .reverse()
             .map((layer) => (
-              <LayerCard key={layer.id} name={layer.name} />
+              <LayerCard key={layer.id} id={layer.id} name={layer.name} onDelete={handleDelete} />
             ))}
         </div>
       )}
